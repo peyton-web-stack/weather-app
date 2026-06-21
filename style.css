@@ -1,0 +1,831 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    background: #0d0e12;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Base Device Hardware Enclosure Layout Frame */
+.phone-frame {
+    position: relative;
+    width: 340px;
+    height: 720px; 
+    background: #000;
+    border: 10px solid #2c2d30;
+    border-radius: 46px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75);
+    /* Removed overflow: hidden so physical buttons can stick out past the borders */
+}
+
+.notch {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 110px;
+    height: 24px;
+    background: #000;
+    border-radius: 0 0 14px 14px;
+    z-index: 999;
+}
+
+/* --- HARDWARE PHONE BUTTONS SIDE POSITIONING --- */
+
+/* Left Side Mute Switch Toggle */
+.mute-switch {
+    position: absolute;
+    left: -14px; /* Sticks out past the -10px frame border boundary */
+    top: 95px;
+    width: 4px;
+    height: 14px;
+    background: #1e1f22;
+    border-radius: 3px 0 0 3px;
+    box-shadow: -2px 2px 4px rgba(0,0,0,0.4);
+    z-index: 5;
+}
+
+/* Left Side Dynamic Volume Rockers */
+.volume-buttons {
+    position: absolute;
+    left: -14px; 
+    top: 135px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 5;
+}
+.volume-btn {
+    width: 4px;
+    height: 38px;
+    background: #232428;
+    border-radius: 3px 0 0 3px;
+    box-shadow: -2px 2px 4px rgba(0,0,0,0.4);
+}
+
+/* Right Side Standby Power/Side Button */
+.power-btn {
+    position: absolute;
+    right: -14px; /* Sticks out past the right side boundary */
+    top: 165px;
+    width: 4px;
+    height: 55px;
+    background: #232428;
+    border-radius: 0 3px 3px 0;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+    z-index: 5;
+}
+
+/* Fluid Native Screen Layer App Framework Container */
+.app-container {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #516375 0%, #3d4b59 40%, #1e252d 100%);
+    color: #fff;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    border-radius: 36px; /* Act as screen mask inside the 46px case frame */
+}
+.app-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* System State View Switch Framework Rules */
+.page {
+    display: none;
+    width: 100%;
+    padding-bottom: 70px;
+}
+.page.active {
+    display: block;
+}
+
+/* FLOATING SYSTEM BOTTOM NAVBAR */
+.floating-system-navbar {
+    position: absolute;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 28px);
+    height: 42px;
+    background: rgba(30, 38, 48, 0.35);
+    backdrop-filter: blur(35px);
+    -webkit-backdrop-filter: blur(35px);
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 990;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.3);
+}
+.nav-action-btn {
+    font-size: 15px;
+    color: #fff;
+    cursor: pointer;
+    opacity: 0.95;
+    transition: transform 0.15s ease;
+}
+.nav-action-btn:active {
+    transform: scale(0.9);
+}
+.pagination-dots-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.pagination-dots-indicator .active-dot {
+    font-size: 9px;
+    color: #fff;
+    transform: rotate(-45deg);
+}
+.pagination-dots-indicator .dot {
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 50%;
+}
+
+/* Status Interface Headers Elements Typography */
+.status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px 0;
+    font-size: 11px;
+    font-weight: 600;
+    height: 22px;
+}
+.status-icons {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.battery-icon {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+.battery-icon span {
+    font-size: 8px;
+}
+
+/* Structural Canvas Hero Section Headers Display */
+.hero-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 6px;
+    margin-bottom: 12px;
+}
+.location-context {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    opacity: 0.55;
+    margin-bottom: 1px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.hero-header h1 {
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.2;
+}
+.hero-main-temp {
+    font-size: 52px;
+    font-weight: 100;
+    line-height: 1;
+    margin-top: 1px;
+}
+.hero-sub-cond {
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.7;
+    margin-top: 1px;
+}
+.hero-hi-lo {
+    font-size: 12px;
+    font-weight: 500;
+    opacity: 0.85;
+    margin-top: 1px;
+}
+
+/* Universal iOS Modular Content Panel Framework */
+.ios-panel {
+    background: rgba(35, 46, 58, 0.35);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-radius: 14px;
+    margin: 0 12px 6px;
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.panel-header {
+    font-size: 9.5px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+    line-height: 1.2;
+}
+.panel-desc-text {
+    font-size: 11.5px;
+    line-height: 1.3;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Text Highlight Warning Alert Module */
+.summary-alert {
+    font-size: 11.5px;
+    line-height: 1.35;
+    font-weight: 400;
+    padding: 8px 12px;
+}
+
+/* Horizontal Inline Scroller Dashboard Panel Layout */
+.hourly-container {
+    padding-right: 0;
+}
+.hourly-scroll {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+}
+.hourly-scroll::-webkit-scrollbar {
+    display: none;
+}
+.hour-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 44px;
+    text-align: center;
+}
+.hour-item span {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.2;
+}
+.hour-item i {
+    font-size: 15px;
+    margin: 5px 0;
+    height: 15px;
+}
+.hour-item .pop-pct {
+    font-size: 8.5px;
+    font-weight: 700;
+    color: #4dc3ff;
+    margin-top: -3px;
+    margin-bottom: 3px;
+    min-height: 10px;
+}
+
+/* Detailed Calendar Bar Metric List styling */
+.daily-list {
+    display: flex;
+    flex-direction: column;
+}
+.day-row {
+    display: flex;
+    align-items: center;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    font-size: 13px;
+    font-weight: 600;
+}
+.day-row:last-child {
+    border-bottom: none;
+}
+.day-lbl {
+    width: 70px; 
+    flex-shrink: 0;
+}
+.day-icon-block {
+    width: 35px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-shrink: 0;
+}
+.day-icon-block i {
+    font-size: 13px;
+}
+.day-icon-block .pop-pct {
+    font-size: 8.5px;
+    color: #4dc3ff;
+    font-weight: 700;
+    margin-top: 1px;
+}
+.day-range-low {
+    width: 26px;
+    opacity: 0.4;
+    text-align: right;
+    flex-shrink: 0;
+}
+.day-range-high {
+    width: 26px;
+    text-align: right;
+    flex-shrink: 0;
+}
+.temp-bar-track {
+    flex: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 2px;
+    margin: 0 10px;
+    position: relative;
+}
+.temp-bar-progress {
+    position: absolute;
+    height: 100%;
+    border-radius: 2px;
+}
+.warm-range {
+    background: linear-gradient(90deg, #ff9f0a 0%, #ff453a 100%);
+}
+.cool-range {
+    background: linear-gradient(90deg, #64d2ff 0%, #ff9f0a 100%);
+}
+.bar-dot {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: #fff;
+    border-radius: 50%;
+    top: -0.5px;
+}
+
+/* Air Quality Widgets Components */
+.aqi-score {
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 1.2;
+}
+.aqi-status {
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 1px;
+    margin-bottom: 8px;
+}
+.spectrum-bar {
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #30d158 0%, #ffe600 30%, #ff9f0a 60%, #ff453a 100%);
+    border-radius: 2px;
+    position: relative;
+    margin-bottom: 8px;
+}
+.spectrum-indicator {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: #fff;
+    border-radius: 50%;
+    border: 1px solid #000;
+    top: -0.5px;
+    transition: left 0.3s ease;
+}
+
+/* Weather Map Module Representation layout rules */
+.mock-map-view {
+    width: 100%;
+    height: 110px;
+    background-color: #2b333c;
+    background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 0);
+    background-size: 14px 14px;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+}
+.map-label {
+    position: absolute;
+    font-size: 9px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+}
+.city-calhoun { top: 10px; left: 45%; }
+.city-rome { top: 32px; left: 15%; }
+.city-cartersville { top: 48px; left: 52%; }
+.city-atlanta { top: 76px; left: 58%; font-weight: 800; font-size: 11px; color: #fff; }
+.map-temp-badge {
+    position: absolute;
+    top: 45px;
+    left: 38%;
+    background: rgba(255,255,255,0.2);
+    border: 1.5px solid #fff;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 9px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 2-Column Square Grid Architecture Grid */
+.ios-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    padding: 0 12px;
+    margin-bottom: 6px;
+}
+.ios-tile {
+    background: rgba(35, 46, 58, 0.35);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-radius: 14px;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    height: 115px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+.tile-val {
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 1.2;
+}
+.tile-subtext {
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 1px;
+    line-height: 1.2;
+}
+.uv-spec {
+    margin-top: 6px;
+    margin-bottom: 0;
+}
+.tile-bottom {
+    margin-top: auto;
+    padding-top: 2px;
+    line-height: 1.25;
+}
+
+/* Dashboard Analog Compass Wind Component layout */
+.wind-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 2px;
+}
+.wind-stats {
+    flex: 1;
+}
+.wind-row-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    padding: 3px 0;
+}
+.stat-bold {
+    font-weight: 600;
+}
+.divider {
+    border: none;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.compass-widget {
+    position: relative;
+    width: 65px;
+    height: 65px;
+    margin-left: 8px;
+    flex-shrink: 0;
+}
+.compass-ring {
+    width: 100%;
+    height: 100%;
+    border: 1.5px dashed rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    position: relative;
+}
+.cardinal {
+    position: absolute;
+    font-size: 7.5px;
+    font-weight: 800;
+    color: rgba(255,255,255,0.4);
+}
+.cardinal.n { top: 1px; left: 50%; transform: translateX(-50%); }
+.cardinal.e { right: 2px; top: 50%; transform: translateY(-50%); }
+.cardinal.s { bottom: 1px; left: 50%; transform: translateX(-50%); }
+.cardinal.w { left: 2px; top: 50%; transform: translateY(-50%); }
+.compass-arrow {
+    position: absolute;
+    width: 2px;
+    height: 100%;
+    left: 47%;
+    top: 0;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.compass-arrow::before {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: -2px;
+    width: 4px;
+    height: 4px;
+    background: #fff;
+    border-radius: 50%;
+}
+.compass-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+.c-num { font-size: 13px; font-weight: 700; }
+.c-unit { font-size: 7.5px; opacity: 0.6; margin-top: -2px; }
+
+/* SVG Bezier Path Curve Components */
+.large-time { font-size: 18px; font-weight: 400; }
+.large-time .ampm { font-size: 11px; margin-left: 1px; }
+.sunset-graphic {
+    width: 100%;
+    margin-top: 2px;
+}
+.sun-arc-svg {
+    width: 100%;
+    display: block;
+}
+.row-desc { margin-top: auto; padding-top: 2px; }
+.val-heavy { font-size: 22px; }
+.text-spaced { margin-bottom: 1px; }
+
+/* Astronomy Moon Representation Widget elements styling */
+.moon-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1px;
+}
+.moon-details { flex: 1; }
+.moon-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    padding: 4px 0;
+    font-weight: 500;
+}
+.m-val { color: rgba(255,255,255,0.5); }
+.moon-sphere {
+    width: 50px;
+    height: 50px;
+    background-color: #3d4a56;
+    border-radius: 50%;
+    margin-left: 12px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset -4px -4px 10px rgba(0,0,0,0.5);
+    flex-shrink: 0;
+}
+.moon-shadow {
+    position: absolute;
+    top: 0; right: 0; width: 68%; height: 100%;
+    background: rgba(15,20,28,0.72);
+    border-radius: 0 50% 50% 0;
+    transition: width 0.3s ease;
+}
+
+/* Comparison and Radial Dial SVG Pressure Elements styling */
+.val-neg { font-size: 22px; font-weight: 300; }
+.line-adjusted { margin-top: -2px; margin-bottom: 2px; font-size: 10.5px; }
+.comparison-footer { display: flex; flex-direction: column; gap: 2px; margin-top: auto; }
+.comp-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10.5px;
+    color: rgba(255,255,255,0.4);
+    font-weight: 500;
+}
+.white-lbl { color: #fff; font-weight: 600; }
+.pressure-widget {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    margin-top: 1px;
+}
+.dial-svg {
+    width: 100%;
+    height: 45px;
+    display: block;
+}
+#stat-pressure-needle {
+    transition: transform 0.4s ease;
+}
+.pressure-center-val {
+    position: absolute;
+    top: 6px; left: 0; right: 0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+.p-symbol { font-size: 9px; opacity: 0.5; }
+.p-num { font-size: 12px; font-weight: 700; margin-top: -2px; }
+.p-unit { font-size: 8.5px; opacity: 0.5; }
+.dial-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 7.5px;
+    color: rgba(255,255,255,0.4);
+    font-weight: 700;
+    padding: 0 4px;
+    margin-top: -4px;
+}
+
+/* Action Trigger Cards List elements styling */
+.action-tile {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 12px;
+}
+.icon-left {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 2px;
+}
+.action-body { flex: 1; }
+.action-title { font-size: 12px; font-weight: 600; margin-bottom: 1px; }
+.action-desc { font-size: 10.5px; color: rgba(255,255,255,0.6); line-height: 1.35; }
+
+/* Navigation lists rows metadata footer styling */
+.metadata-footer-list {
+    margin: 15px 12px 6px;
+    display: flex;
+    flex-direction: column;
+}
+.meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+}
+.meta-main-lbl { font-size: 12px; font-weight: 500; }
+.meta-sub-lbl { font-size: 9.5px; color: rgba(255,255,255,0.4); margin-top: 1px; }
+.meta-icon { font-size: 11px; color: rgba(255,255,255,0.3); }
+.list-divider { border: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.attribution-links {
+    text-align: center;
+    font-size: 9.5px;
+    color: rgba(255,255,255,0.35);
+    margin-top: 8px;
+    padding-bottom: 10px;
+}
+.attribution-links a, .list-attribution a {
+    color: rgba(255,255,255,0.5);
+    text-decoration: underline;
+}
+
+/* MAIN ARCHIVE LOCATION LIST SCENE */
+.list-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px 8px;
+}
+.list-header-row h2 {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+.circle-menu-btn {
+    width: 26px;
+    height: 26px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+.locations-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 0 12px;
+}
+.location-card {
+    width: 100%;
+    height: 84px;
+    border-radius: 14px;
+    padding: 10px 12px;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+.location-card:active {
+    transform: scale(0.98);
+}
+.card-left, .card-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.card-right {
+    align-items: flex-end;
+    text-align: right;
+}
+.c-name {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    line-height: 1.2;
+}
+.c-subtext {
+    font-size: 10.5px;
+    font-weight: 600;
+    opacity: 0.8;
+}
+.c-condition {
+    font-size: 12px;
+    font-weight: 500;
+}
+.c-temp {
+    font-size: 32px;
+    font-weight: 200;
+    line-height: 0.9;
+}
+.c-hilow {
+    font-size: 10.5px;
+    font-weight: 600;
+    opacity: 0.8;
+}
+.alert-badge-row {
+    font-size: 10.5px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 4px;
+}
+
+.card-bg-cloudy { background: linear-gradient(135deg, #718292 0%, #51606d 100%); }
+.card-bg-overcast { background: linear-gradient(135deg, #8fa0aa 0%, #687985 100%); }
+.card-bg-rain { background: linear-gradient(135deg, #3a4b5a 0%, #202b36 100%); }
+.card-bg-storm { background: linear-gradient(135deg, #536270 0%, #36424e 100%); }
+
+.list-attribution {
+    text-align: center;
+    font-size: 9.5px;
+    color: rgba(255,255,255,0.35);
+    margin: 14px 0;
+}
+
+/* Bottom Fixed Input Section Layer */
+.fixed-search-bar-wrap {
+    margin-top: 8px;
+    width: 100%;
+    background: #161c22;
+    padding: 10px 0 16px;
+}
+.search-pill-container {
+    width: calc(100% - 24px);
+    margin: 0 auto;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+}
+.s-icon, .mic-icon {
+    color: rgba(255,255,255,0.4);
+    font-size: 11px;
+}
+#search-input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 13px;
+    padding: 0 6px;
+}
+#search-input::placeholder {
+    color: rgba(255,255,255,0.35);
+}

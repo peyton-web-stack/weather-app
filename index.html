@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iOS Weather App</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="mute-switch"></div>
+        <div class="volume-buttons">
+            <div class="volume-btn item-up"></div>
+            <div class="volume-btn item-down"></div>
+        </div>
+        <div class="power-btn"></div>
+        
+        <div class="app-container" id="weather-app-container">
+            
+            <div id="detail-page" class="page active">
+                <div class="status-bar">
+                    <span class="time">11:23</span>
+                    <div class="status-icons">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <div class="battery-icon"><i class="fas fa-battery-three-quarters"></i><span>49</span></div>
+                    </div>
+                </div>
+
+                <div class="hero-header">
+                    <div class="location-context"><i class="fa-solid fa-location-arrow"></i> HOME</div>
+                    <h1 id="hero-city">Rockmart</h1>
+                    <div id="hero-temp" class="hero-main-temp">78°</div>
+                    <div id="hero-condition" class="hero-sub-cond">Cloudy</div>
+                    <div id="hero-range" class="hero-hi-lo">H:84°  L:71°</div>
+                </div>
+
+                <div class="ios-panel summary-alert">
+                    Thunderstorms expected around 1PM. Wind gusts are up to 11 mph.
+                </div>
+
+                <div class="ios-panel hourly-container">
+                    <div class="panel-header"><i class="far fa-clock"></i> HOURLY FORECAST</div>
+                    <div class="hourly-scroll" id="detail-hourly-scroll"></div>
+                </div>
+
+                <div class="ios-panel">
+                    <div class="panel-header"><i class="far fa-calendar-days"></i> 10-DAY FORECAST</div>
+                    <div class="daily-list" id="detail-daily-list"></div>
+                </div>
+
+                <div class="ios-panel">
+                    <div class="panel-header"><i class="fa-solid fa-circle-nodes"></i> AIR QUALITY</div>
+                    <div class="aqi-score" id="stat-aqi">15</div>
+                    <div class="aqi-status" id="stat-aqi-status">Good</div>
+                    <div class="spectrum-bar"><div class="spectrum-indicator" id="stat-aqi-indicator" style="left: 8%;"></div></div>
+                    <p class="panel-desc-text" id="stat-aqi-desc">Air quality index is 15, which is better than yesterday at about this time.</p>
+                </div>
+
+                <div class="ios-panel">
+                    <div class="panel-header"><i class="fa-solid fa-umbrella"></i> PRECIPITATION MAP</div>
+                    <div class="mock-map-view">
+                        <span class="map-label city-calhoun">Calhoun</span>
+                        <span class="map-label city-rome">Rome</span>
+                        <span class="map-label city-cartersville">Cartersville</span>
+                        <span class="map-label city-atlanta">Atlanta</span>
+                        <div class="map-temp-badge" id="stat-map-badge">78</div>
+                    </div>
+                </div>
+
+                <div class="ios-grid">
+                    <div class="ios-tile">
+                        <div class="panel-header"><i class="fa-solid fa-temperature-half"></i> FEELS LIKE</div>
+                        <div class="tile-val" id="stat-feels-like">78°</div>
+                        <p class="panel-desc-text tile-bottom" id="stat-feels-desc">Similar to the actual temperature.</p>
+                    </div>
+                    <div class="ios-tile">
+                        <div class="panel-header"><i class="fa-solid fa-sun"></i> UV INDEX</div>
+                        <div class="tile-val" id="stat-uv">5</div>
+                        <div class="tile-subtext" id="stat-uv-status">Moderate</div>
+                        <div class="spectrum-bar uv-spec"><div class="spectrum-indicator" id="stat-uv-indicator" style="left: 50%;"></div></div>
+                        <p class="panel-desc-text tile-bottom" id="stat-uv-desc">Use sun protection until 6PM.</p>
+                    </div>
+                </div>
+
+                <div class="ios-panel wind-panel">
+                    <div class="panel-header"><i class="fa-solid fa-wind"></i> WIND</div>
+                    <div class="wind-body">
+                        <div class="wind-stats">
+                            <div class="wind-row-item"><span>Wind</span><span class="stat-bold" id="stat-wind">6 mph</span></div>
+                            <hr class="divider">
+                            <div class="wind-row-item"><span>Gusts</span><span class="stat-bold" id="stat-gusts">11 mph</span></div>
+                            <hr class="divider">
+                            <div class="wind-row-item"><span>Direction</span><span class="stat-bold" id="stat-wind-dir">314° NW</span></div>
+                        </div>
+                        <div class="compass-widget">
+                            <div class="compass-ring">
+                                <span class="cardinal n">N</span><span class="cardinal e">E</span>
+                                <span class="cardinal s">S</span><span class="cardinal w">W</span>
+                                <div class="compass-arrow" style="transform: rotate(314deg);"></div>
+                            </div>
+                            <div class="compass-center">
+                                <span class="c-num" id="stat-compass-num">6</span>
+                                <span class="c-unit">mph</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ios-grid">
+                    <div class="ios-tile">
+                        <div class="panel-header"><i class="fa-solid fa-mountain-sun"></i> SUNSET</div>
+                        <div class="tile-val large-time" id="stat-sunset">8:53<span class="ampm">PM</span></div>
+                        <div class="sunset-graphic">
+                            <svg class="sun-arc-svg" viewBox="0 0 100 40">
+                                <path d="M 5,35 Q 50,5 95,35" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+                                <path d="M 5,35 Q 50,5 65,22" fill="none" stroke="#fff" stroke-width="2"/>
+                                <circle cx="65" cy="22" r="3" fill="#fff"/>
+                                <line x1="0" y1="35" x2="100" y2="35" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+                            </svg>
+                        </div>
+                        <div class="panel-desc-text row-desc" id="stat-sunrise">Sunrise: 6:29AM</div>
+                    </div>
+                    <div class="ios-tile">
+                        <div class="panel-header"><i class="fa-solid fa-droplet"></i> RAINFALL</div>
+                        <div class="tile-val val-heavy" id="stat-rainfall">1.25"</div>
+                        <div class="tile-subtext text-spaced">in last 24h</div>
+                        <p class="panel-desc-text tile-bottom" id="stat-rainfall-desc">.05" expected in next 24h.</p>
+                    </div>
+                </div>
+
+                <div class="ios-grid">
+                    <div class="ios-tile">
+                        <div class="panel-header"><i class="fa-solid fa-eye"></i> VISIBILITY</div>
+                        <div class="tile-val" id="stat-visibility">12 mi</div>
+                        <p class="panel-desc-text tile-bottom" id="stat-visibility-desc">Perfectly clear view.</p>
+                    </div>
+                    <div class="ios-tile">
+                        <div class="panel-header"><i class="fa-solid fa-droplet"></i> HUMIDITY</div>
+                        <div class="tile-val" id="stat-humidity">79%</div>
+                        <p class="panel-desc-text tile-bottom" id="stat-dewpoint">The dew point is 71° right now.</p>
+                    </div>
+                </div>
+
+                <div class="ios-panel moon-panel">
+                    <div class="panel-header"><i class="fa-solid fa-moon"></i> WAXING CRESCENT</div>
+                    <div class="moon-body">
+                        <div class="moon-details">
+                            <div class="moon-row"><span>Illumination</span><span class="m-val" id="stat-moon-illum">27%</span></div>
+                            <hr class="divider">
+                            <div class="moon-row"><span>Moonrise</span><span class="m-val" id="stat-moonrise">11:27 AM</span></div>
+                            <hr class="divider">
+                            <div class="moon-row"><span>Next Full Moon</span><span class="m-val" id="stat-moon-full">10 DAYS</span></div>
+                        </div>
+                        <div class="moon-sphere">
+                            <div class="moon-shadow" id="stat-moon-shadow" style="width: 68%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ios-grid">
+                    <div class="ios-tile">
+                        <div class="panel-header"><i class="fa-solid fa-chart-simple"></i> AVERAGES</div>
+                        <div class="tile-val val-neg" id="stat-avg-diff">-1°</div>
+                        <div class="tile-subtext line-adjusted">from normal high</div>
+                        <div class="comparison-footer">
+                            <div class="comp-row"><span>Today</span><span class="white-lbl" id="stat-avg-today">H:84°</span></div>
+                            <div class="comp-row"><span>Average</span><span class="white-lbl" id="stat-avg-normal">H:85°</span></div>
+                        </div>
+                    </div>
+                    <div class="ios-tile">
+                        <div class="panel-header"><i class="fa-solid fa-gauge-high"></i> PRESSURE</div>
+                        <div class="pressure-widget">
+                            <svg class="dial-svg" viewBox="0 0 100 80">
+                                <circle cx="50" cy="50" r="35" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="4" stroke-dasharray="120 200" transform="rotate(-145 50 50)"/>
+                                <circle cx="50" cy="50" r="35" fill="none" stroke="#fff" stroke-width="4" stroke-dasharray="2 150" id="stat-pressure-needle" transform="rotate(0 50 50)"/>
+                            </svg>
+                            <div class="pressure-center-val">
+                                <span class="p-symbol" id="stat-pressure-trend">=</span>
+                                <span class="p-num" id="stat-pressure">29.94</span>
+                                <span class="p-unit">inHg</span>
+                            </div>
+                            <div class="dial-labels"><span>Low</span><span>High</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ios-panel action-tile">
+                    <i class="fa-solid fa-message-bubble icon-left"></i>
+                    <div class="action-body">
+                        <div class="action-title">Report an Issue</div>
+                        <div class="action-desc">You can describe the current conditions at your location to help improve forecasts.</div>
+                    </div>
+                </div>
+
+                <div class="metadata-footer-list">
+                    <div class="meta-row">
+                        <div>
+                            <div class="meta-main-lbl" id="stat-footer-title">Weather for Home</div>
+                            <div class="meta-sub-lbl" id="stat-footer-subtitle">202 White Creek Loop, Rockmart, GA 30153</div>
+                        </div>
+                        <i class="fa-solid fa-circle-info meta-icon"></i>
+                    </div>
+                    <hr class="list-divider">
+                    <div class="meta-row">
+                        <span class="meta-main-lbl">Turn On Notifications</span>
+                        <i class="fa-solid fa-bell meta-icon"></i>
+                    </div>
+                    <hr class="list-divider">
+                    <div class="meta-row">
+                        <span class="meta-main-lbl">Open in Maps</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square meta-icon"></i>
+                    </div>
+                </div>
+
+                <div class="attribution-links">
+                    Learn more about <a href="#">weather data</a> and <a href="#">map data</a>
+                </div>
+            </div>
+
+            <div id="list-page" class="page">
+                <div class="status-bar">
+                    <span class="time">11:23</span>
+                    <div class="status-icons">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <div class="battery-icon"><i class="fas fa-battery-three-quarters"></i><span>49</span></div>
+                    </div>
+                </div>
+
+                <div class="list-header-row">
+                    <h2>Weather</h2>
+                    <div class="circle-menu-btn"><i class="fa-solid fa-ellipsis"></i></div>
+                </div>
+
+                <div class="locations-stack">
+                    <div class="location-card card-bg-cloudy" data-city="Rockmart">
+                        <div class="card-left">
+                            <span class="c-name">Rockmart</span>
+                            <span class="c-subtext">My Location • Home</span>
+                            <span class="c-condition">Cloudy</span>
+                        </div>
+                        <div class="card-right">
+                            <span class="c-temp">78°</span>
+                            <span class="c-hilow">H:84° L:71°</span>
+                        </div>
+                    </div>
+
+                    <div class="location-card card-bg-overcast" data-city="Paulding County">
+                        <div class="card-left">
+                            <span class="c-name">Paulding County</span>
+                            <span class="c-subtext">11:23 AM</span>
+                            <span class="c-condition">Cloudy</span>
+                        </div>
+                        <div class="card-right">
+                            <span class="c-temp">78°</span>
+                            <span class="c-hilow">H:85° L:71°</span>
+                        </div>
+                    </div>
+
+                    <div class="location-card card-bg-rain" data-city="Panama City Beach">
+                        <div class="card-left">
+                            <span class="c-name">Panama City Beach</span>
+                            <span class="c-subtext">10:23 AM</span>
+                            <div class="alert-badge-row"><i class="fa-solid fa-triangle-exclamation"></i> Flood Watch</div>
+                        </div>
+                        <div class="card-right">
+                            <span class="c-temp">81°</span>
+                            <span class="c-hilow">H:84° L:79°</span>
+                        </div>
+                    </div>
+
+                    <div class="location-card card-bg-cloudy" data-city="Long Island City">
+                        <div class="card-left">
+                            <span class="c-name">Long Island City</span>
+                            <span class="c-subtext">11:23 AM</span>
+                            <span class="c-condition">Cloudy</span>
+                        </div>
+                        <div class="card-right">
+                            <span class="c-temp">76°</span>
+                            <span class="c-hilow">H:84° L:70°</span>
+                        </div>
+                    </div>
+
+                    <div class="location-card card-bg-storm" data-city="Euharlee">
+                        <div class="card-left">
+                            <span class="c-name">Euharlee</span>
+                            <span class="c-subtext">11:23 AM</span>
+                            <span class="c-condition">Cloudy</span>
+                        </div>
+                        <div class="card-right">
+                            <span class="c-temp">79°</span>
+                            <span class="c-hilow">H:85° L:72°</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="list-attribution">
+                    Learn more about <a href="#">weather data</a> and <a href="#">map data</a>
+                </div>
+
+                <div class="fixed-search-bar-wrap">
+                    <div class="search-pill-container">
+                        <i class="fa-solid fa-magnifying-glass s-icon"></i>
+                        <input type="text" placeholder="Search for a city or airport" id="search-input">
+                        <i class="fa-solid fa-microphone mic-icon"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="floating-system-navbar" id="global-navbar">
+            <div class="nav-action-btn"><i class="fa-regular fa-map"></i></div>
+            <div class="pagination-dots-indicator">
+                <i class="fa-solid fa-location-arrow active-dot"></i>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+            <div class="nav-action-btn" id="list-toggle-trigger"><i class="fa-solid fa-list"></i></div>
+        </div>
+        
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
